@@ -154,21 +154,16 @@ class Deck:
     # A simple object that provides deck-like functionality
     def __init__(self, maxLength = 52):
         self.deck = deque(maxlen=maxLength)        
-        
     # Returns the current size of the Deck
     def getSizeOfDeck(self):
         return len(self.deck)
-    
     def __len__(self):
         return len(self.deck)
-    
     def __repr__(self):
         outputstring = ""
         for card in self.deck:
             outputstring += repr(card)
         return outputstring
-    
-    
     # Takes a list variable, cards, and iteratively adds them to the end of the deck
     def addCardsToDeck(self, cards):
         for card in cards:

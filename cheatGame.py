@@ -3,29 +3,6 @@ from deckAndCards import Rank, Suit
 from Player import Player, TCPPlayer
 import random
 
-# class Player():
-#     def __init__(self, playerID):
-#         # Create unique instances of the variables for this player
-#         self.playerID = playerID
-#         self.hand = Hand()
-        
-#     def recieveSingleCard(self, card):
-#         self.hand.addSingleCardToHand(card)
-        
-#     def __repr__(self):
-#         statusString = "Player {} has {} cards in their hand. ".format(self.playerID, len(self.hand))
-#         cardString = ""
-#         for card in self.hand.deck:
-#             cardString += repr(card)      
-#         return statusString + cardString 
-    
-# class TCPPlayer(Player):
-#     def __init__(self, portNumber):
-#         super().__init__(self)
-#         # Now init a whole bunch of TCP related things @Eduardo Henrique, bind to localhost with port
-#         # Wait for connections from humanPlayers/bots and report the state of the Player instance here that it is connected to.
-    
-
 class gameContainer():
     def __init__(self, nPlayers):
         # Create unique instances of the variables for this gameContainer
@@ -45,9 +22,46 @@ class gameContainer():
                     i.recieveSingleCard( self.pile.drawOne() ) # Try drawing a card from the pile and giving it to the current player
                 except IndexError: # Catch the condition where there are no more cards and break out of the while loop
                     break
-
         # Select a random rank and set it as the target
         self.currentClaimTarget = random.choice(list(Rank))
+        # Create a claim ledger
+        self.claimLedger = []
         # Initialisation of the game is now done... wooo
-    
-    
+        
+        
+    def startGame(self):
+        
+        victory = False
+        while(true)
+            for i in self.players:
+                claim, actualCards = i.makeTransaction() # It's the first players go. makeTransaction returns a list for both the actual cards being presented and the claim itself.
+            
+                # We add the claim to the claimLedger
+                self.claimLedger.append(claim)
+                # Add the actualCards to the pile
+                self.pile.append(actualCards)
+            
+                # Now ask all players if they dispute it?
+                for j in self.players:
+                    if i == j: # Skip ourselves (that makes no sense)
+                        continue
+                    else:
+                        if( j.dispute(i.playerID, claim) == True ): # If dispute is True then we need to verify the claim against the actualCards
+                            if(claim == actualCards):
+                                j.addToHand( self.pile.takeAll() ) # They were being truthful the disputer takes all the cards from the Pile
+                            else:
+                                i.addToHand( self.pile.takeAll() ) # They were caught lying take all the cards from the Pile
+
+                # Has the current player won?
+                if( len(i.hand) == 0 ):
+                    print("Player {} has Won the game".format(i.playerID))
+                    victory = True
+                    break
+            if(victory == True):
+                break
+            else:
+                continue
+                        
+            
+            
+            

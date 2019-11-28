@@ -8,6 +8,8 @@ class Hand(Deck):
         self.deck = deque(maxlen=maxLength)
     def addSingleCardToHand(self, card):
         self.deck.append(card)
+    def addToHand(self,cards):
+        self.deck.extend(cards)
         
 class Pile(Deck):
 
@@ -15,8 +17,7 @@ class Pile(Deck):
         for a in Suit:
             for b in Rank:
                 self.deck.append(Card(a,b))
-    
-    
+                
     def drawOne(self):
         card = self.deck.pop()
         return card
@@ -25,6 +26,9 @@ class Pile(Deck):
         allCards = list(self.deck)
         self.deck.clear()
         return allCards
+    
+    def addCards(self, cards):
+        self.deck.append(cards)
     
     def shuffle(self):
         # deques are slow at random access so we need to convert self.deck into a list temporarily
