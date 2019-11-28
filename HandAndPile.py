@@ -1,11 +1,14 @@
 # Import the various classes and enumerated types from the deckAndCards.py file
 from deckAndCards import Suit, Rank, Card, Deck
+from collections import deque
 import random
 
 class Hand(Deck):
+    def __init__(self, maxLength = 52):
+        self.deck = deque(maxlen=maxLength)
     def addSingleCardToHand(self, card):
         self.deck.append(card)
-
+        
 class Pile(Deck):
 
     def populateWithFrenchPlayingDeck(self):
@@ -15,7 +18,8 @@ class Pile(Deck):
     
     
     def drawOne(self):
-        return self.deck.pop()
+        card = self.deck.pop()
+        return card
 
     def takeAll(self):
         allCards = list(self.deck)

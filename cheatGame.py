@@ -3,11 +3,11 @@ from deckAndCards import Rank, Suit
 import random
 
 class Player():
-    hand = Hand()
-    
     def __init__(self, playerID):
+        # Create unique instances of the variables for this player
         self.playerID = playerID
-
+        self.hand = Hand()
+        
     def recieveSingleCard(self, card):
         self.hand.addSingleCardToHand(card)
         
@@ -17,13 +17,19 @@ class Player():
         for card in self.hand.deck:
             cardString += repr(card)      
         return statusString + cardString
-        
+
+class TCPPlayer(Player):
+    def __init__(self, portNumber):
+        super().__init__(self)
+        # Now init a whole bunch of TCP related things 
+    
 
 class gameContainer():
-    players = []
-    pile = Pile()
-    
     def __init__(self, nPlayers):
+        # Create unique instances of the variables for this gameContainer
+        self.players = []
+        self.pile = Pile()
+        
         # Add players to self.players
         for i in range(nPlayers):
             self.players.append( Player(i) )
@@ -31,16 +37,14 @@ class gameContainer():
         self.pile.populateWithFrenchPlayingDeck()
         # Shuffle the pile
         self.pile.shuffle()
-        # Distribute cards until not everyone can have the same number
-        while( len(self.pile) != 0 ):
-            for i in self.players:
+        # Distribute cards until no cards remain in the pile
+        while( len(self.pile) != 0 ): # Keep on going through the pile until no cards remain
+            for i in self.players: # Go through each player iteratively 
                 try:
-                    i.recieveSingleCard( self.pile.drawOne() )
-                except IndexError:
+                    i.recieveSingleCard( self.pile.drawOne() ) # Try drawing a card from the pile and giving it to the current player
+                except IndexError: # Catch the condition where there are no more cards and break out of the while loop
                     break
-                    
-        # Distribute the remaining cards.
-        
+
         # Select a random rank and set it as the target
         self.currentClaimTarget = random.choice(list(Rank))
         # Initialisation of the game is now done... wooo
