@@ -149,7 +149,7 @@ class Card:
                 return(u"\U0001F0DD")
         else:
             return("Ill-formed Card")
-        
+
 class Deck:
     # A simple object that provides deck-like functionality
     def __init__(self, maxLength = 52):

@@ -32,15 +32,10 @@ class gameContainer():
     def startGame(self):
         
         victory = False
-        while(true)
+        while(true):
             for i in self.players:
-                claim, actualCards = i.makeTransaction() # It's the first players go. makeTransaction returns a list for both the actual cards being presented and the claim itself.
-            
-                # We add the claim to the claimLedger
-                self.claimLedger.append(claim)
-                # Add the actualCards to the pile
-                self.pile.append(actualCards)
-            
+                claim, actualCards = i.makeTransaction(self.currentClaimTarget) # It's the first players go. makeTransaction returns both the actual cards being presented and the claim itself.
+                
                 # Now ask all players if they dispute it?
                 for j in self.players:
                     if i == j: # Skip ourselves (that makes no sense)
@@ -51,9 +46,15 @@ class gameContainer():
                                 j.addToHand( self.pile.takeAll() ) # They were being truthful the disputer takes all the cards from the Pile
                             else:
                                 i.addToHand( self.pile.takeAll() ) # They were caught lying take all the cards from the Pile
-
+                # Now that we've checked all the disputes, we add the claim to the claimLedger
+                self.claimLedger.append(claim)
+                # Update the currentClaimTarget
+                # A claim is a tuple (numberOfCards, Rank) so we need to grab the second entry and update the currentClaimTarget
+                self.currentClaimTarget = claim[1]
+                # Add the cards to the pile
+                self.pile.append(actualCards)                              
                 # Has the current player won?
-                if( len(i.hand) == 0 ):
+                if( len(i.hand) == 0 ): # Does the player have no cards left in their hand?
                     print("Player {} has Won the game".format(i.playerID))
                     victory = True
                     break
@@ -61,7 +62,3 @@ class gameContainer():
                 break
             else:
                 continue
-                        
-            
-            
-            

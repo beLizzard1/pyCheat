@@ -14,25 +14,24 @@ class Player():
         self.hand.addSingleCardToHand(card)
     
     def addToHand(self, cards):
-        self.hand.addToHand(cards):
+        self.hand.addToHand(cards)
 
     def __repr__(self):
         statusString = "Player {} has {} cards in their hand. ".format(self.playerID, len(self.hand))
         cardString = ""
         for card in self.hand.deck:
-            cardString += repr(card)      
-        return statusString + cardString     
+            cardString += repr(card)
+        return statusString + cardString
 
     def makeTransaction(self):
-        claim = []
-        cardsFromHand = []
-        
-        return claim, cardsFromHand
+        raise NotImplementedError()
+#         claim = tuple() #( nCards, Rank )
+#         cardsFromHand = []
+#         return claim, cardsFromHand
         
     def dispute(self, currentPlayer, claim):
-        
-        
-        return False
+        raise NotImplementedError()
+#        return False
     
     
     
@@ -41,3 +40,12 @@ class TCPPlayer(Player):
         super().__init__(self)
         # Now init a whole bunch of TCP related things @Eduardo Henrique, bind to localhost with port
         # Wait for connections from humanPlayers/bots and report the state of the Player instance here that it is connected to.
+
+    def reportStateToClient(self):
+        # Send the players state 
+        
+    def makeTransaction(self, currentClaimTarget):
+        raise NotImplementedError()
+
+    def dispute(self, currentPlayer, claim):
+        raise NotImplementedError()
